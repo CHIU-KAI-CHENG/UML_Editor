@@ -1,4 +1,4 @@
-package umlEditor;
+package umleditor;
 
 public class UMLeditor {
 

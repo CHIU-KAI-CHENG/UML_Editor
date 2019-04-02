@@ -5,4 +5,4 @@
  * @author Kent
  *
  */
-package umlEditor;
+package umleditor;
