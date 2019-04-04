@@ -1,23 +1,25 @@
 package umleditor;
 
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 
 @SuppressWarnings("serial")
-public class EditFrame extends Frame {
+public class EditFrame extends JFrame {
 	
-	TopMenuBar menuBar;
+	JMenuBar menuBar;
+	JScrollPane toolBar;
 	public EditFrame(String frameName) {
 		super(frameName);
 		
-		menuBar = new TopMenuBar(this);
-		this.setMenuBar(menuBar);
+		menuBar = new MenuBar(this);
+		this.setJMenuBar(menuBar);		
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
+		toolBar = new ToolBar(this);
+		this.add(toolBar, BorderLayout.WEST);
 	}
 }

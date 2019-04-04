@@ -1,15 +1,16 @@
 package umleditor;
 
-import java.awt.Frame;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
 
 @SuppressWarnings("serial")
-public class TopMenuBar extends MenuBar {
+public class MenuBar extends JMenuBar {
 	
 	static final String FILE = "File";
 	static final String EDIT = "Edit";
@@ -17,23 +18,24 @@ public class TopMenuBar extends MenuBar {
 	static final String GROUP = "Group";
 	static final String UNGROUP = "Ungorup";
 	
-	Frame frameInstance;
-	Menu mFile, mEdit;
-	MenuItem menuItem;
+	JFrame frameInstance;
+	JMenu mFile;
+	JMenu mEdit;
+	JMenuItem menuItem;
 	
-	public TopMenuBar(Frame frame) {
+	public MenuBar(JFrame frame) {
 		frameInstance = frame;
-		mFile = new Menu(FILE);
-		mEdit = new Menu(EDIT);
+		mFile = new JMenu(FILE);
+		mEdit = new JMenu(EDIT);
 		
-		menuItem = new MenuItem(CHANGE_OBJECT_NAME);
+		menuItem = new JMenuItem(CHANGE_OBJECT_NAME);
 		menuItem.addActionListener(new RenameListener());
 		mEdit.add(menuItem);
 		
-		menuItem = new MenuItem(GROUP);
+		menuItem = new JMenuItem(GROUP);
 		mEdit.add(menuItem);
 		
-		menuItem = new MenuItem(UNGROUP);
+		menuItem = new JMenuItem(UNGROUP);
 		mEdit.add(menuItem);
 		
 		this.add(mFile);

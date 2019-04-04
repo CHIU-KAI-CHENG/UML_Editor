@@ -1,55 +1,60 @@
 package umleditor;
 
-import java.awt.Button;
-import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.TextField;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 /**
  * The dialog to rename an object.
  */
 @SuppressWarnings("serial")
-public class RenameDialog extends Dialog {
+public class RenameDialog extends JDialog {
 
-	Label newNameLbl;
-	TextField inputNameTf;
-	Dimension frameCenter;
-	Button okBtn, cancelBtn;
-	Panel panel;
+	JLabel newNameLbl;
+	JTextField inputNameTf;
+	JButton okBtn, cancelBtn;
+	JPanel panel;
 	
-	public RenameDialog(Frame owner, String title) {
+	Dimension frameCenter;
+	Point frameOffset;
+	
+	public RenameDialog(JFrame owner, String title) {
 		super(owner, title);
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setLocationRelativeTo(owner);
+		this.setResizable(false);
 		
+		frameOffset = owner.getLocation();
 		frameCenter = owner.getSize();
-		this.setLocation(frameCenter.width / 2 - 200, frameCenter.height / 2 - 50);
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				dispose();
-			}
-		});
 		
+		this.setLocation(frameOffset.x + frameCenter.width / 2 - 200, 
+				frameOffset.y + frameCenter.height / 2 - 50);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.add(Box.createVerticalStrut(5));
 		
-		panel = new Panel();
+		panel = new JPanel();
 		
-		newNameLbl = new Label("New Name: ");
+		panel.add(Box.createHorizontalStrut(5));
+		
+		newNameLbl = new JLabel("New Name: ");
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.add(newNameLbl);
 		
-		inputNameTf = new TextField();
-		inputNameTf.setColumns(36);
+		panel.add(Box.createHorizontalStrut(5));
+		
+		inputNameTf = new JTextField();
+		inputNameTf.setMaximumSize(new Dimension(280, 30));
 		panel.add(inputNameTf);
 		
 		this.add(panel);
@@ -58,15 +63,15 @@ public class RenameDialog extends Dialog {
 		this.add(Box.createVerticalStrut(10));
 		
 
-		panel = new Panel();
+		panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
 		panel.add(Box.createHorizontalStrut(200));
 		
-		okBtn = new Button("Finish");
+		okBtn = new JButton("Finish");
 		panel.add(okBtn);
 		
-		cancelBtn = new Button("Cancel");
+		cancelBtn = new JButton("Cancel");
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -75,6 +80,7 @@ public class RenameDialog extends Dialog {
 			
 		});
 		panel.add(cancelBtn);
+		
 		
 		this.add(panel);
 			
