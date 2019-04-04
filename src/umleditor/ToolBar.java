@@ -6,6 +6,10 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -18,8 +22,10 @@ import javax.swing.ScrollPaneConstants;
 
 @SuppressWarnings("serial")
 public class ToolBar extends JScrollPane {
-	int width;
 	JPanel panel = new JPanel();
+	final Color btnBgColor = new Color(215, 215, 234);
+	final Color selectedBtnBgColor = new Color(198, 198, 226);
+	private JPanel selectedBtn;
 	
 	public ToolBar(JFrame owner) {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -27,7 +33,8 @@ public class ToolBar extends JScrollPane {
 		ToolButton selectBtn = new ToolButton(new ImageIcon("img/select.png"), 
 				"Select");
 		panel.add(selectBtn);
-		selectBtn.setBackground(Color.GRAY);
+		selectBtn.setBackground(selectedBtnBgColor);
+		selectedBtn = selectBtn;
 		
 		ToolButton associationBtn = new ToolButton(new ImageIcon("img/association_line.png"), 
 				"Association Line");
@@ -49,17 +56,14 @@ public class ToolBar extends JScrollPane {
 				"Use Case");
 		panel.add(usecaseBtn);
 		
-		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBackground(btnBgColor);
 		
 		
 		this.setViewportView(panel);
 		JScrollBar scrollBar = new JScrollBar();
 		scrollBar.setPreferredSize(new Dimension(0, 0));
 		this.setVerticalScrollBar(scrollBar);
-		this.setMinimumSize(new Dimension(0, Toolkit.getDefaultToolkit().getScreenSize().height));
-		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		width = this.getWidth();
+		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);		
 	}
 	
 	class ToolButton extends JPanel {
@@ -77,21 +81,24 @@ public class ToolBar extends JScrollPane {
 			toolNameLbl.setHorizontalAlignment(JLabel.CENTER);
 			
 			this.setMaximumSize(new Dimension(120, 100));
-			this.setBackground(Color.LIGHT_GRAY);
+			this.setBackground(btnBgColor);
 			this.add(toolIcon);
 			this.add(toolNameLbl);
+			
+			this.addMouseListener(new ToolButtonListener());
 		}
 		
-//		@Override
-//		protected void paintComponent(Graphics g) {
-//			super.paintComponent(g);
-//			g.drawImage(Toolkit.getDefaultToolkit().getImage("img/icons8-rounded_rectangle.png"),
-//					0, 
-//					0, 
-//					this.getSize().width,
-//					this.getSize().height,
-//					this
-//					);
-//		}
+		class ToolButtonListener extends MouseAdapter {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				selectedBtn.setBackground(btnBgColor);
+				selectedBtn = (JPanel) e.getSource();
+				selectedBtn.setBackground(selectedBtnBgColor);
+				
+			}
+			
+		}
+		
 	}
 }
