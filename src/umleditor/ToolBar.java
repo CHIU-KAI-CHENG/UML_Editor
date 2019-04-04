@@ -1,10 +1,12 @@
 package umleditor;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -16,7 +18,7 @@ import javax.swing.ScrollPaneConstants;
 
 @SuppressWarnings("serial")
 public class ToolBar extends JScrollPane {
-	int toolNum = 6;
+	int width;
 	JPanel panel = new JPanel();
 	
 	public ToolBar(JFrame owner) {
@@ -24,7 +26,8 @@ public class ToolBar extends JScrollPane {
 		
 		ToolButton selectBtn = new ToolButton(new ImageIcon("img/select.png"), 
 				"Select");
-		panel.add(selectBtn);	
+		panel.add(selectBtn);
+		selectBtn.setBackground(Color.GRAY);
 		
 		ToolButton associationBtn = new ToolButton(new ImageIcon("img/association_line.png"), 
 				"Association Line");
@@ -46,26 +49,49 @@ public class ToolBar extends JScrollPane {
 				"Use Case");
 		panel.add(usecaseBtn);
 		
+		panel.setBackground(Color.LIGHT_GRAY);
+		
 		
 		this.setViewportView(panel);
 		JScrollBar scrollBar = new JScrollBar();
 		scrollBar.setPreferredSize(new Dimension(0, 0));
 		this.setVerticalScrollBar(scrollBar);
+		this.setMinimumSize(new Dimension(0, Toolkit.getDefaultToolkit().getScreenSize().height));
 		this.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		this.setPreferredSize(new Dimension(105, owner.getHeight()));
-		this.setMaximumSize(new Dimension(105, 
-				(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+		
+		width = this.getWidth();
 	}
 	
 	class ToolButton extends JPanel {
 		private JLabel toolIcon;
+		private JLabel toolNameLbl;
 		
 		public ToolButton(ImageIcon img, String toolName) {
+			
+			this.setLayout(new GridLayout(2, 1, 1, 1));
+			
 			toolIcon = new JLabel(img);
+			toolIcon.setAlignmentX(CENTER_ALIGNMENT);
 			
-			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			toolNameLbl = new JLabel(toolName);
+			toolNameLbl.setHorizontalAlignment(JLabel.CENTER);
 			
+			this.setMaximumSize(new Dimension(120, 100));
+			this.setBackground(Color.LIGHT_GRAY);
 			this.add(toolIcon);
+			this.add(toolNameLbl);
 		}
+		
+//		@Override
+//		protected void paintComponent(Graphics g) {
+//			super.paintComponent(g);
+//			g.drawImage(Toolkit.getDefaultToolkit().getImage("img/icons8-rounded_rectangle.png"),
+//					0, 
+//					0, 
+//					this.getSize().width,
+//					this.getSize().height,
+//					this
+//					);
+//		}
 	}
 }
