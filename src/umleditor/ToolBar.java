@@ -2,14 +2,10 @@ package umleditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,40 +16,59 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import mode.Mode;
+import mode.canvas.*;
+import utils.Tuple;
+
 @SuppressWarnings("serial")
 public class ToolBar extends JScrollPane {
+	Canvas canvas = Canvas.getInstance();
 	JPanel panel = new JPanel();
 	final Color btnBgColor = new Color(215, 215, 234);
 	final Color selectedBtnBgColor = new Color(198, 198, 226);
-	private JPanel selectedBtn;
+	final ArrayList<Tuple<Mode, Mode>> events = new ArrayList<>();
 	
-	public ToolBar(JFrame owner) {
+	private JPanel selectedBtn = null;
+	
+	public ToolBar(JFrame owner) {		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.SelectMode(), new mode.basic_object.SelectMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.AssociationLineMode(), new AssociationLineMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.GeneralizationLineMode(), new GeneralizationLineMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.CompositionLineMode(), new CompositionLineMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.ClassMode(), new mode.basic_object.ClassMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.UseCaseMode(), new mode.basic_object.UseCaseMode()));
+		
+		
 		ToolButton selectBtn = new ToolButton(new ImageIcon("img/select.png"), 
-				"Select");
+				"Select",
+				events.get(Mode.SELECT));
 		panel.add(selectBtn);
-		selectBtn.setBackground(selectedBtnBgColor);
-		selectedBtn = selectBtn;
 		
 		ToolButton associationBtn = new ToolButton(new ImageIcon("img/association_line.png"), 
-				"Association Line");
+				"Association Line",
+				events.get(Mode.ASSOCIATION_LINE));
 		panel.add(associationBtn);
 		
 		ToolButton genealizationBtn = new ToolButton(new ImageIcon("img/generalization_line.png"), 
-				"Generalization Line");
+				"Generalization Line", 
+				events.get(Mode.GENERALIZATION_LINE));
 		panel.add(genealizationBtn);
 		
 		ToolButton compositionBtn = new ToolButton(new ImageIcon("img/composition_line.png"), 
-				"Composition Line");
+				"Composition Line", 
+				events.get(Mode.COMPOSITION_LINE));
 		panel.add(compositionBtn);
 		
 		ToolButton classBtn = new ToolButton(new ImageIcon("img/class.png"), 
-				"Class");
+				"Class", 
+				events.get(Mode.CLASS));
 		panel.add(classBtn);
 		
 		ToolButton usecaseBtn = new ToolButton(new ImageIcon("img/use_case.png"),
-				"Use Case");
+				"Use Case", 
+				events.get(Mode.USE_CASE));
 		panel.add(usecaseBtn);
 		
 		panel.setBackground(btnBgColor);
@@ -67,10 +82,11 @@ public class ToolBar extends JScrollPane {
 	}
 	
 	class ToolButton extends JPanel {
+		private Tuple<Mode, Mode> toolMode;
 		private JLabel toolIcon;
 		private JLabel toolNameLbl;
 		
-		public ToolButton(ImageIcon img, String toolName) {
+		public ToolButton(ImageIcon img, String toolName, Tuple<Mode, Mode> toolMode) {
 			
 			this.setLayout(new GridLayout(2, 1, 1, 1));
 			
@@ -79,6 +95,8 @@ public class ToolBar extends JScrollPane {
 			
 			toolNameLbl = new JLabel(toolName);
 			toolNameLbl.setHorizontalAlignment(JLabel.CENTER);
+			
+			this.toolMode = toolMode;
 			
 			this.setMaximumSize(new Dimension(120, 100));
 			this.setBackground(btnBgColor);
@@ -92,10 +110,12 @@ public class ToolBar extends JScrollPane {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				selectedBtn.setBackground(btnBgColor);
+				if (selectedBtn != null) {					
+					selectedBtn.setBackground(btnBgColor);
+				}
 				selectedBtn = (JPanel) e.getSource();
 				selectedBtn.setBackground(selectedBtnBgColor);
-				
+				canvas.setMode(toolMode);
 			}
 			
 		}

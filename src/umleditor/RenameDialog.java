@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class RenameDialog extends JDialog {
 
+	Canvas canvas = Canvas.getInstance();
+	
 	JLabel newNameLbl;
 	JTextField inputNameTf;
 	JButton okBtn, cancelBtn;
@@ -69,6 +71,15 @@ public class RenameDialog extends JDialog {
 		panel.add(Box.createHorizontalStrut(200));
 		
 		okBtn = new JButton("Finish");
+		okBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvas.renameObject(inputNameTf.getText());
+				dispose();
+			}
+			
+		});
 		panel.add(okBtn);
 		
 		cancelBtn = new JButton("Cancel");

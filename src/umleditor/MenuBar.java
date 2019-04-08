@@ -18,6 +18,8 @@ public class MenuBar extends JMenuBar {
 	static final String GROUP = "Group";
 	static final String UNGROUP = "Ungorup";
 	
+	Canvas canvas = Canvas.getInstance();
+	
 	JFrame frameInstance;
 	JMenu mFile;
 	JMenu mEdit;
