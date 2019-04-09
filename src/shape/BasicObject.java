@@ -2,6 +2,7 @@ package shape;
 
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,10 +23,10 @@ public abstract class BasicObject extends JLabel implements Observer {
 	private Mode mode = null;
 	
 	protected void setPorts() {
-		ports[TOP] = new Port(width / 2 , 0);
-		ports[LEFT] = new Port(0, height / 2);
-		ports[BOT] = new Port(width / 2, height);
-		ports[RIGHT] = new Port(width, height / 2);
+		ports[TOP] = new Port(width / 2 , 0, initX, initY);
+		ports[LEFT] = new Port(0, height / 2, initX, initY);
+		ports[BOT] = new Port(width / 2, height, initX, initY);
+		ports[RIGHT] = new Port(width, height / 2, initX, initY);
 	}
 	
 	public void changeName(String newName) {
@@ -52,6 +53,10 @@ public abstract class BasicObject extends JLabel implements Observer {
 	public void resetLocation(int moveX, int moveY) {
 		initX += moveX;
 		initY += moveY;
+		for (Port p: ports) {
+			p.setParentX(initX);
+			p.setParentY(initY);
+		}
 		this.setBounds(initX, initY, width, height);
 		repaint();
 	}
@@ -68,15 +73,41 @@ public abstract class BasicObject extends JLabel implements Observer {
 		return name;
 	}
 	
+	public boolean isInside(Point p) {
+		boolean ret = true;
+		if (p.x < initX || p.y < initY) {
+			ret = false;
+		}
+		if (p.x > initX + width || p.y > initY + height) {
+			ret = false;
+		}
+		
+		return ret;
+	}
+	
+	public Port getNearest(int x, int y) {
+		x -= initX;
+		y -= initY;
+		Port retPort = null;
+		int shortest = Integer.MAX_VALUE;
+		int edge1, edge2, distance;
+		for(int i = 0; i < 4; i++) {
+			edge1 = Math.abs(ports[i].getInitX() - x);
+			edge2 = Math.abs(ports[i].getInitY() - y);
+			distance = edge1 * edge1 + edge2 * edge2;
+			if (distance < shortest) {
+				shortest = distance;
+				retPort = ports[i];
+			}
+		}
+		return retPort;
+	}
+	
 	protected void drawPorts(Graphics g) {
-		g.fillRoundRect(ports[TOP].getInitX(), ports[TOP].getInitY(), 
-				Port.offset * 2, Port.offset * 2, Port.offset, Port.offset);
-		g.fillRoundRect(ports[LEFT].getInitX(), ports[LEFT].getInitY(), 
-				Port.offset * 2, Port.offset * 2, Port.offset, Port.offset);
-		g.fillRoundRect(ports[BOT].getInitX(), ports[BOT].getInitY(), 
-				Port.offset * 2, Port.offset * 2, Port.offset, Port.offset);
-		g.fillRoundRect(ports[RIGHT].getInitX(), ports[RIGHT].getInitY(), 
-				Port.offset * 2, Port.offset * 2, Port.offset, Port.offset);
+		g.fillRect(ports[TOP].getInitX(), ports[TOP].getInitY(), Port.offset * 2, Port.offset * 2);
+		g.fillRect(ports[LEFT].getInitX(), ports[LEFT].getInitY(), Port.offset * 2, Port.offset * 2);
+		g.fillRect(ports[BOT].getInitX(), ports[BOT].getInitY(), Port.offset * 2, Port.offset * 2);
+		g.fillRoundRect(ports[RIGHT].getInitX(), ports[RIGHT].getInitY(), Port.offset * 2, Port.offset * 2, Port.offset, Port.offset);
 	}
 
 	@Override

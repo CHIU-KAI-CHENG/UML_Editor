@@ -30,7 +30,6 @@ public class Class extends BasicObject {
 		this.gap = height / 3;
 		this.setVisible(true);
 		
-
 		this.setBounds(initX, initY, width, height);
 	}
 	

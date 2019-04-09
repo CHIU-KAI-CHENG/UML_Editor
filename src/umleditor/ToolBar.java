@@ -17,7 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import mode.Mode;
-import mode.canvas.*;
 import utils.Tuple;
 
 @SuppressWarnings("serial")
@@ -33,12 +32,13 @@ public class ToolBar extends JScrollPane {
 	public ToolBar(JFrame owner) {		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
-		events.add(new Tuple<Mode, Mode>(new mode.canvas.SelectMode(), new mode.basic_object.SelectMode()));
-		events.add(new Tuple<Mode, Mode>(new mode.canvas.AssociationLineMode(), new AssociationLineMode()));
-		events.add(new Tuple<Mode, Mode>(new mode.canvas.GeneralizationLineMode(), new GeneralizationLineMode()));
-		events.add(new Tuple<Mode, Mode>(new mode.canvas.CompositionLineMode(), new CompositionLineMode()));
-		events.add(new Tuple<Mode, Mode>(new mode.canvas.ClassMode(), new mode.basic_object.ClassMode()));
-		events.add(new Tuple<Mode, Mode>(new mode.canvas.UseCaseMode(), new mode.basic_object.UseCaseMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.SelectMode(),
+				new mode.basic_object.SelectMode()));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.AssociationLineMode(), null));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.GeneralizationLineMode(), null));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.CompositionLineMode(), null));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.ClassMode(), null));
+		events.add(new Tuple<Mode, Mode>(new mode.canvas.UseCaseMode(), null));
 		
 		
 		ToolButton selectBtn = new ToolButton(new ImageIcon("img/select.png"), 
