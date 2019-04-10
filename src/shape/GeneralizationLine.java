@@ -44,7 +44,7 @@ public class GeneralizationLine extends Line {
 		double preRotateX = vectorX * 15 / totalLength, preRotateY = vectorY * 15 / totalLength;
 		
 		double cos30 = Math.cos(Math.PI / 6), sin30 = Math.sin(Math.PI / 6);
-		double cos330 = Math.cos(11 * Math.PI / 6), sin330 = Math.sin(11 * Math.PI / 6);		
+		double cos330 = Math.cos(11 * Math.PI / 6), sin330 = Math.sin(11 * Math.PI / 6);	
 
 		double newVectorX1 = preRotateX * cos30 - preRotateY * sin30;
 		double newVectorY1 = preRotateX * sin30 + preRotateY * cos30;

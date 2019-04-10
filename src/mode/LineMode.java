@@ -1,9 +1,8 @@
-package mode.canvas;
+package mode;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import mode.Mode;
 import shape.BasicObject;
 import shape.Line;
 import shape.Port;

@@ -3,22 +3,17 @@ package umleditor;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Observable;
 
 import javax.swing.JLayeredPane;
 
 import mode.Mode;
 import shape.BasicObject;
 import shape.Line;
-import shape.Port;
-import utils.Tuple;
-
 
 @SuppressWarnings("serial")
 public class Canvas extends JLayeredPane {
 	private static Canvas instance = null;
-	private ModeBroadcaster broadcaster = new ModeBroadcaster();
-	private Tuple<Mode, Mode> currentMode = null;
+	private Mode currentMode = null;
 	private BasicObject selectedObject = null;
 	private ArrayList<BasicObject> objects = new ArrayList<>();
 	private ArrayList<Line> lines = new ArrayList<>();
@@ -38,15 +33,14 @@ public class Canvas extends JLayeredPane {
 		return instance;
 	}
 	
-	public void setMode(Tuple<Mode, Mode> mode) {
+	public void setMode(Mode mode) {
 		if (currentMode != null) {
-			this.removeMouseListener(currentMode.getLeft());
-			this.removeMouseMotionListener(currentMode.getLeft());
+			this.removeMouseListener(currentMode);
+			this.removeMouseMotionListener(currentMode);
 		}
 		currentMode = mode;
-		this.addMouseListener(currentMode.getLeft());
-		this.addMouseMotionListener(currentMode.getLeft());
-		this.broadcaster.broadcastMode(currentMode.getRight());
+		this.addMouseListener(currentMode);
+		this.addMouseMotionListener(currentMode);
 	}
 	
 	public void setSelectedObject(BasicObject o) {
@@ -93,10 +87,8 @@ public class Canvas extends JLayeredPane {
 	}	
 	
 	public void addBasicObject(BasicObject o) {
-		o.setMode(currentMode.getRight());
 		this.add(o, new Integer(depth));
 		objects.add(o);
-		broadcaster.addObserver(o);
 		depth++;
 	}
 	
@@ -121,12 +113,4 @@ public class Canvas extends JLayeredPane {
 			l.draw(g);
 		}
 		
-	}
-	
-	public class ModeBroadcaster extends Observable {
-		public void broadcastMode(Mode mode) {
-			this.setChanged();
-			this.notifyObservers(mode);
-		}
-	}
-}
+	}}

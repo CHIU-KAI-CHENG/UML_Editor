@@ -1,8 +1,7 @@
-package mode.canvas;
+package mode;
 
 import java.awt.event.MouseEvent;
 
-import mode.Mode;
 import shape.UseCase;
 
 public class UseCaseMode extends Mode {

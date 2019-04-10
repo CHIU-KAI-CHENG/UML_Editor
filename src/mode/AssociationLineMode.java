@@ -1,4 +1,4 @@
-package mode.canvas;
+package mode;
 
 import shape.AssociationLine;
 

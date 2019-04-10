@@ -3,15 +3,11 @@ package shape;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JLabel;
 
-import mode.Mode;
-
 @SuppressWarnings("serial")
-public abstract class BasicObject extends JLabel implements Observer {
+public abstract class BasicObject extends JLabel {
 	final int TOP = 0;
 	final int LEFT = 1;
 	final int BOT = 2;
@@ -20,7 +16,6 @@ public abstract class BasicObject extends JLabel implements Observer {
 	protected boolean isSelected = false;
 	protected String name;
 	protected Port[] ports = new Port[4];
-	private Mode mode = null;
 	
 	protected void setPorts() {
 		ports[TOP] = new Port(width / 2 , 0, initX, initY);
@@ -32,12 +27,6 @@ public abstract class BasicObject extends JLabel implements Observer {
 	public void changeName(String newName) {
 		this.name = newName;
 		repaint();
-	}
-	
-	public void setMode(Mode mode) {
-		this.mode = mode;
-		this.addMouseListener(mode);
-		this.addMouseMotionListener(mode);
 	}
 	
 	public void beSelected() {
@@ -107,16 +96,7 @@ public abstract class BasicObject extends JLabel implements Observer {
 		g.fillRect(ports[TOP].getInitX(), ports[TOP].getInitY(), Port.offset * 2, Port.offset * 2);
 		g.fillRect(ports[LEFT].getInitX(), ports[LEFT].getInitY(), Port.offset * 2, Port.offset * 2);
 		g.fillRect(ports[BOT].getInitX(), ports[BOT].getInitY(), Port.offset * 2, Port.offset * 2);
-		g.fillRoundRect(ports[RIGHT].getInitX(), ports[RIGHT].getInitY(), Port.offset * 2, Port.offset * 2, Port.offset, Port.offset);
+		g.fillRect(ports[RIGHT].getInitX(), ports[RIGHT].getInitY(), Port.offset * 2, Port.offset * 2);
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		if (mode != null) {
-			this.removeMouseListener(mode);
-			this.removeMouseMotionListener(mode);
-		}		
-		setMode((Mode) arg);
-		
-	}
 }
