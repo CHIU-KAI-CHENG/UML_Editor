@@ -23,34 +23,59 @@ public class MenuBar extends JMenuBar {
 	JFrame frameInstance;
 	JMenu mFile;
 	JMenu mEdit;
-	JMenuItem menuItem;
+	JMenuItem renameMI, groupMI, ungroupMI;
 	
 	public MenuBar(JFrame frame) {
 		frameInstance = frame;
 		mFile = new JMenu(FILE);
 		mEdit = new JMenu(EDIT);
 		
-		menuItem = new JMenuItem(CHANGE_OBJECT_NAME);
-		menuItem.addActionListener(new RenameListener());
-		mEdit.add(menuItem);
+		renameMI = new JMenuItem(CHANGE_OBJECT_NAME);
+		renameMI.addActionListener(new RenameListener());
+		renameMI.setEnabled(false);
+		mEdit.add(renameMI);
 		
-		menuItem = new JMenuItem(GROUP);
-		mEdit.add(menuItem);
+		groupMI = new JMenuItem(GROUP);
+		groupMI.addActionListener(new GroupListener());
+		groupMI.setEnabled(false);
+		mEdit.add(groupMI);
 		
-		menuItem = new JMenuItem(UNGROUP);
-		mEdit.add(menuItem);
+		ungroupMI = new JMenuItem(UNGROUP);
+		mEdit.add(ungroupMI);
 		
 		this.add(mFile);
 		this.add(mEdit);
 	}
 	
+	public JMenuItem getRenameMI() {
+		return renameMI;
+	}
+	
+	public JMenuItem getGroupMI() {
+		return groupMI;
+	}
+	
+	public void enableMenuItem(JMenuItem mi) {
+		mi.setEnabled(true);
+	}
+	
+	public void disableMenuItem(JMenuItem mi) {
+		mi.setEnabled(false);
+	}
+	
 	class RenameListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			RenameDialog renameDialog = new RenameDialog(frameInstance, "Rename Object");
 			renameDialog.setSize(400, 100);
 			renameDialog.setVisible(true);
+		}		
+	}
+	
+	class GroupListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			canvas.groupObjects();
 		}
 		
 	}

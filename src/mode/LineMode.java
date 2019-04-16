@@ -14,11 +14,11 @@ public abstract class LineMode extends Mode {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		o1 = canvas.getObjectByPoint(e.getPoint());
+		o1 = canvas.getBasicObjectByPoint(e.getPoint());
 		if (o1 == null)	return;
 		
 		p1 = o1.getNearest(e.getX(), e.getY());
-		canvas.setLineStart(new Point(o1.getX() + p1.getCenterX(), o1.getY() + p1.getCenterY()));
+		canvas.setMouseStart(new Point(o1.getX() + p1.getCenterX(), o1.getY() + p1.getCenterY()));
 		createTempLine();
 		canvas.setTempLine(tempLine);
 	}
@@ -27,7 +27,7 @@ public abstract class LineMode extends Mode {
 	public void mouseDragged (MouseEvent e) {
 		if (o1 == null) return;
 		
-		canvas.setLineEnd(new Point(e.getX(), e.getY()));
+		canvas.setMouseEnd(new Point(e.getX(), e.getY()));
 		canvas.repaint();
 	}
 	
@@ -38,7 +38,7 @@ public abstract class LineMode extends Mode {
 		
 		if (o1 == null) return;
 		
-		o2 = canvas.getObjectByPoint(e.getPoint());
+		o2 = canvas.getBasicObjectByPoint(e.getPoint());
 		if (o2 == null || o1 == o2) {
 			canvas.repaint();
 			return;

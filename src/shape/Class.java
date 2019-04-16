@@ -2,6 +2,7 @@ package shape;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 @SuppressWarnings("serial")
 public class Class extends BasicObject {
@@ -9,40 +10,24 @@ public class Class extends BasicObject {
 	int gap;
 	
 	public Class(int initX, int initY) {
+		this.view = new ClassView();
 		this.name = INIT_NAME;
-		this.initX = initX;
-		this.initY = initY;
-		this.width = 100;
-		this.height = 120;
-		this.gap = height / 3;
-			
-
-		this.setBounds(initX, initY, width, height);
+		this.r = new Rectangle(initX, initY, 100, 120);
+		this.gap = 40;
+		
+		view.setBounds(r);
 		setPorts();
 	}
 	
-	public Class(int initX, int initY, int width, int height) {
-		this.name = INIT_NAME;
-		this.initX = initX;
-		this.initY = initY;
-		this.width = width;
-		this.height = height;
-		this.gap = height / 3;
-		this.setVisible(true);
-		
-		this.setBounds(initX, initY, width, height);
-	}
-	
-	@Override
-	public void paintComponent(Graphics g) {
+	public void paintClass(Graphics g) {
 		
 		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, width, height);
+		g.fillRect(0, 0, r.width, r.height);
 		
 		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, width, height);		
-		g.drawLine(0, gap, width, gap);
-		g.drawLine(0, gap * 2, width, gap * 2);
+		g.drawRect(0, 0, r.width, r.height);		
+		g.drawLine(0, gap, r.width, gap);
+		g.drawLine(0, gap * 2, r.width, gap * 2);
 		
 				
 		if (isSelected) {
@@ -50,9 +35,19 @@ public class Class extends BasicObject {
 		}
 		
 		int stringLength = g.getFontMetrics().stringWidth(name);
-		int indent = (width - stringLength) / 2;
+		int indent = (r.width - stringLength) / 2;
 		
 		g.drawString(name, indent, 25);
+	}
+	
+	protected class ClassView extends View {
+
+		@Override
+		public void paint(Graphics g) {
+			paintClass(g);
+			
+		}
+		
 	}
 
 }

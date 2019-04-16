@@ -2,31 +2,29 @@ package shape;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 @SuppressWarnings("serial")
 public class UseCase extends BasicObject {
 	final String USE_CASE_NAME = "Use Case";
 	
 	public UseCase(int initX, int initY) {
+		view = new UseCaseView();	
 		this.name = USE_CASE_NAME;
-		this.initX = initX;
-		this.initY = initY;
-		this.width = 100;
-		this.height = 80;
 		
-
-		this.setBounds(initX, initY, width, height);
+		r = new Rectangle(initX, initY, 100, 80);
+		
+		view.setBounds(r.x, r.y, r.width, r.height);
 		setPorts();
 	}
 	
-	@Override
-	public void paint(Graphics g) {
-		g.fillOval(0, 0, width, height);
+	public void paintUseCase(Graphics g) {
+		g.fillOval(0, 0, r.width, r.height);
 		g.setColor(Color.WHITE);
-		g.fillOval(1, 1, width - 2, height - 2);
+		g.fillOval(1, 1, r.width - 2, r.height - 2);
 		
 		int stringLength = g.getFontMetrics().stringWidth(name);
-		int indent = (width - stringLength) / 2;
+		int indent = (r.width - stringLength) / 2;
 		
 		g.setColor(Color.BLACK);
 		
@@ -35,5 +33,14 @@ public class UseCase extends BasicObject {
 		}
 		
 		g.drawString(name, indent, 40); 
+	}
+	
+	protected class UseCaseView extends View {
+
+		@Override
+		public void paint(Graphics g) {
+			paintUseCase(g);			
+		}
+		
 	}
 }
