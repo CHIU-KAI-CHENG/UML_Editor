@@ -41,6 +41,8 @@ public class MenuBar extends JMenuBar {
 		mEdit.add(groupMI);
 		
 		ungroupMI = new JMenuItem(UNGROUP);
+		ungroupMI.addActionListener(new UngroupListener());
+		ungroupMI.setEnabled(false);
 		mEdit.add(ungroupMI);
 		
 		this.add(mFile);
@@ -53,6 +55,10 @@ public class MenuBar extends JMenuBar {
 	
 	public JMenuItem getGroupMI() {
 		return groupMI;
+	}
+	
+	public JMenuItem getUngroupMI() {
+		return ungroupMI;
 	}
 	
 	public void enableMenuItem(JMenuItem mi) {
@@ -77,8 +83,13 @@ public class MenuBar extends JMenuBar {
 		public void actionPerformed(ActionEvent e) {
 			canvas.groupObjects();
 		}
-		
 	}
 	
+	class UngroupListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			canvas.ungroupObjects();
+		}
+	}
 	
 }

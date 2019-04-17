@@ -10,6 +10,11 @@ import java.util.ArrayList;
 public class Group extends SelectableObject {
 	ArrayList<SelectableObject> objects = new ArrayList<>();
 
+	public Group() {}
+	
+	public Group(ArrayList<SelectableObject> sos) {
+		this.objects = sos;		
+	}
 	
 	public void setRect(int x1, int y1, int x2, int y2) {
 		r.x = (x1 < x2) ? x1 : x2;
@@ -40,7 +45,12 @@ public class Group extends SelectableObject {
 		return false;
 	}
 	
-	@Override
+	public void commit() {
+		for (SelectableObject so: objects) {
+			so.setParentObj(this);
+		}
+	}
+	
 	public void ungroup() {
 		for (SelectableObject o: objects) {
 			o.setParentObj(null);

@@ -54,15 +54,6 @@ public abstract class BasicObject extends SelectableObject{
 	}
 	
 	@Override
-	public void ungroup() {
-		SelectableObject so = parentObj;
-		while(so.getParentObj() != null) {
-			so = so.getParentObj();
-		}
-		so.ungroup();
-	}
-	
-	@Override
 	public void select() {
 		if (parentGroup == null) {
 			isSelected = true;

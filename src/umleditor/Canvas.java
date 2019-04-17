@@ -58,20 +58,15 @@ public class Canvas extends JLayeredPane {
 	
 	public void addSelectedObjects(SelectableObject so) {
 		selectedObjects.add(so);
-		if (selectedObjects.size() == 1 && selectedObjects.get(0) instanceof BasicObject) {
-			menuBar.enableMenuItem(menuBar.getRenameMI());
-		}
+		setRenameBtn();
+		setUngroupBtn();
 	}
 	
 	public void addAllSelectedObjects(ArrayList<SelectableObject> sos) {
 		selectedObjects.addAll(sos);
-		if (tempGroup.getObjects().size() > 1) {
-			menuBar.enableMenuItem(menuBar.getGroupMI());
-		}
-
-		if (selectedObjects.size() == 1 && selectedObjects.get(0) instanceof BasicObject) {
-			menuBar.enableMenuItem(menuBar.getRenameMI());
-		}
+		setRenameBtn();
+		setGroupBtn();
+		setUngroupBtn();
 	}
 	
 	public void unSelectAllObjects() {
@@ -79,8 +74,9 @@ public class Canvas extends JLayeredPane {
 			selectedObjects.get(i).unselect();
 		}
 		selectedObjects.clear();
-		menuBar.disableMenuItem(menuBar.getRenameMI());
-		menuBar.disableMenuItem(menuBar.getGroupMI());
+		setRenameBtn();
+		setGroupBtn();
+		setUngroupBtn();
 	}
 	
 //	public void unSelectObject(SelectableObject so) {
@@ -93,11 +89,27 @@ public class Canvas extends JLayeredPane {
 	}
 	
 	public void groupObjects() {
-		for (SelectableObject so: tempGroup.getObjects()) {
-			so.setParentObj(tempGroup);
+		if (tempGroup == null) {
+			tempGroup = new Group(selectedObjects);
 		}
+		tempGroup.commit();
 		topObjects.removeAll(tempGroup.getObjects());
 		topObjects.add(tempGroup);
+		selectedObjects.removeAll(tempGroup.getObjects());
+		selectedObjects.add(tempGroup);
+		setGroupBtn();
+		setUngroupBtn();
+	}
+	
+	public void ungroupObjects() {
+		Group g = ((Group) selectedObjects.get(0));
+		g.ungroup();
+		topObjects.remove(g);
+		topObjects.addAll(g.getObjects());
+		selectedObjects.remove(g);
+		selectedObjects.addAll(g.getObjects());
+		setGroupBtn();
+		setUngroupBtn();
 	}
 	
 	public void setTempLine(Line l) {
@@ -143,6 +155,33 @@ public class Canvas extends JLayeredPane {
 	
 	public ArrayList<SelectableObject> getTopObjects() {
 		return topObjects;
+	}
+	
+	private void setRenameBtn() {
+		if (selectedObjects.size() == 1 && selectedObjects.get(0) instanceof BasicObject) {
+			menuBar.enableMenuItem(menuBar.getRenameMI());
+		}
+		else {
+			menuBar.disableMenuItem(menuBar.getRenameMI());
+		}
+	}
+	
+	private void setGroupBtn() {
+		if (selectedObjects.size() > 1) {
+			menuBar.enableMenuItem(menuBar.getGroupMI());
+		}
+		else {
+			menuBar.disableMenuItem(menuBar.getGroupMI());
+		}
+	}
+	
+	private void setUngroupBtn() {
+		if (selectedObjects.size() == 1 && selectedObjects.get(0) instanceof Group) {
+			menuBar.enableMenuItem(menuBar.getUngroupMI());
+		}
+		else {
+			menuBar.disableMenuItem(menuBar.getUngroupMI());
+		}
 	}
 	
 	public BasicObject getBasicObjectByPoint(Point p) {

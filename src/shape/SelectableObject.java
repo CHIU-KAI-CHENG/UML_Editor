@@ -6,8 +6,6 @@ public abstract class SelectableObject implements Selectable {
 	protected SelectableObject parentObj = null;
 	protected Rectangle r = new Rectangle();
 	
-	public abstract void ungroup();
-	
 	public Rectangle getRect() {
 		return r;
 	}
