@@ -52,12 +52,13 @@ public class Canvas extends JLayeredPane {
 		this.addMouseMotionListener(currentMode);
 	}
 	
-//	public ArrayList<SelectableObject> getSelectedObjects() {
-//		return selectedObjects;
-//	}
+	public ArrayList<SelectableObject> getSelectedObjects() {
+		return selectedObjects;
+	}
 	
 	public void addSelectedObjects(SelectableObject so) {
 		selectedObjects.add(so);
+		so.select();
 		setRenameBtn();
 		setUngroupBtn();
 	}
@@ -146,6 +147,8 @@ public class Canvas extends JLayeredPane {
 		this.add(o.getView(), new Integer(depth));
 		objects.add(o);
 		topObjects.add(o);
+		unSelectAllObjects();
+		addSelectedObjects(o);
 		depth++;
 	}
 	

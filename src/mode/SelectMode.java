@@ -22,8 +22,8 @@ public class SelectMode extends Mode {
 			canvas.setTempGroup(g);
 		}
 		else {
+			g = null;
 			canvas.addSelectedObjects(so);
-			so.select();
 		}
 	}
 	
